@@ -17,7 +17,6 @@ subject to the following restrictions:
 #define 	BT_BROADPHASE_INTERFACE_H
 
 
-
 struct btDispatcherInfo;
 class btDispatcher;
 #include "btBroadphaseProxy.h"

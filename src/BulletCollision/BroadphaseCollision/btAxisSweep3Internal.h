@@ -58,10 +58,10 @@ public:
 	{
 	public:
 	BT_DECLARE_ALIGNED_ALLOCATOR();
-	
 		// indexes into the edge arrays
 		BP_FP_INT_TYPE m_minEdges[3], m_maxEdges[3];		// 6 * 2 = 12
 //		BP_FP_INT_TYPE m_uniqueId;
+		BP_FP_INT_TYPE m_handle;
 		btBroadphaseProxy*	m_dbvtProxy;//for faster raycast
 		//void* m_pOwner; this is now in btBroadphaseProxy.m_clientObject
 	
@@ -251,7 +251,7 @@ void	btAxisSweep3Internal<BP_FP_INT_TYPE>::destroyProxy(btBroadphaseProxy* proxy
 	Handle* handle = static_cast<Handle*>(proxy);
 	if (m_raycastAccelerator)
 		m_raycastAccelerator->destroyProxy(handle->m_dbvtProxy,dispatcher);
-	removeHandle(static_cast<BP_FP_INT_TYPE>(handle->m_uniqueId), dispatcher);
+	removeHandle(handle->m_handle, dispatcher);
 }
 
 template <typename BP_FP_INT_TYPE>
@@ -260,7 +260,7 @@ void	btAxisSweep3Internal<BP_FP_INT_TYPE>::setAabb(btBroadphaseProxy* proxy,cons
 	Handle* handle = static_cast<Handle*>(proxy);
 	handle->m_aabbMin = aabbMin;
 	handle->m_aabbMax = aabbMax;
-	updateHandle(static_cast<BP_FP_INT_TYPE>(handle->m_uniqueId), aabbMin, aabbMax,dispatcher);
+	updateHandle(handle->m_handle, aabbMin, aabbMax,dispatcher);
 	if (m_raycastAccelerator)
 		m_raycastAccelerator->setAabb(handle->m_dbvtProxy,aabbMin,aabbMax,dispatcher);
 
@@ -514,8 +514,17 @@ BP_FP_INT_TYPE btAxisSweep3Internal<BP_FP_INT_TYPE>::addHandle(const btVector3& 
 	
 
 	Handle* pHandle = getHandle(handle);
-	
-	pHandle->m_uniqueId = static_cast<int>(handle);
+
+	if (generateUID == NULL)
+	{	
+		pHandle->m_uniqueId = static_cast<int>(handle);
+	} 
+	else 
+	{
+		pHandle->m_uniqueId = generateUID(pOwner);
+	}
+	pHandle->m_handle = handle;
+
 	//pHandle->m_pOverlaps = 0;
 	pHandle->m_clientObject = pOwner;
 	pHandle->m_collisionFilterGroup = collisionFilterGroup;

@@ -21,6 +21,9 @@ subject to the following restrictions:
 #include "LinearMath/btAlignedAllocator.h"
 
 
+typedef int (*GenerateUIDPtr)(void* );
+extern GenerateUIDPtr generateUID;
+
 /// btDispatcher uses these types
 /// IMPORTANT NOTE:The types are ordered polyhedral, implicit convex and concave
 /// to facilitate type checking

@@ -77,7 +77,9 @@ class btSortConstraintOnIslandPredicate
 			int rIslandId0,lIslandId0;
 			rIslandId0 = btGetConstraintIslandId(rhs);
 			lIslandId0 = btGetConstraintIslandId(lhs);
-			return lIslandId0 < rIslandId0;
+			return (lIslandId0 < rIslandId0) 
+				|| (lIslandId0 == rIslandId0 
+					&& lhs->getRigidBodyA().getUserIndex2() < rhs->getRigidBodyB().getUserIndex2());
 		}
 };
 

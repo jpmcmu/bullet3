@@ -96,6 +96,11 @@ btBroadphaseProxy*	btSimpleBroadphase::createProxy(  const btVector3& aabbMin,  
 	int newHandleIndex = allocHandle();
 	btSimpleBroadphaseProxy* proxy = new (&m_pHandles[newHandleIndex])btSimpleBroadphaseProxy(aabbMin,aabbMax,shapeType,userPtr,collisionFilterGroup,collisionFilterMask);
 
+	if (generateUID != NULL) 
+	{
+		proxy->m_uniqueId = generateUID(userPtr);
+	}
+
 	return proxy;
 }
 
