@@ -98,7 +98,7 @@ public:
 	int				m_debugBodyId;
 	
 
-protected:
+public:
 
 	ATTRIBUTE_ALIGNED16(btVector3		m_deltaLinearVelocity);
 	btVector3		m_deltaAngularVelocity;
