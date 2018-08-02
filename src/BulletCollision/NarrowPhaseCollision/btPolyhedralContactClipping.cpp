@@ -380,8 +380,8 @@ bool btPolyhedralContactClipping::findSeparatingAxis(	const btConvexPolyhedron& 
 		btVector3 dirA = worldEdgeA;
 		btVector3 dirB = worldEdgeB;
 		
-		btScalar hlenB = 1e30f;
-		btScalar hlenA = 1e30f;
+		btScalar hlenB = SIMD_INFINITY;
+		btScalar hlenA = SIMD_INFINITY;
 
 		btSegmentsClosestPoints(ptsVector,offsetA,offsetB,tA,tB,
 			translation,

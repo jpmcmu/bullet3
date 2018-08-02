@@ -12,8 +12,12 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
+
+
 #ifndef BT_SCALAR_H
 #define BT_SCALAR_H
+
+#define BT_USE_FIXED_POINT
 
 #ifdef BT_MANAGED_CODE
 //Aligned data types not supported in managed code
@@ -23,6 +27,7 @@ subject to the following restrictions:
 #include <math.h>
 #include <stdlib.h>  //size_t for MSVC 6.0
 #include <float.h>
+#include <cFixedPoint.h>
 
 /* SVN $Revision$ on $Date$ from http://bullet.googlecode.com*/
 #define BT_BULLET_VERSION 288
@@ -191,7 +196,7 @@ inline int btGetVersion()
 		#else//USE_LIBSPE2
 	//non-windows systems
 
-			#if (defined (__APPLE__) && (!defined (BT_USE_DOUBLE_PRECISION)))
+			#if (defined (__APPLE__) && (!defined (BT_USE_DOUBLE_PRECISION)) && (!defined(BT_USE_FIXED_POINT)))
 				#if defined (__i386__) || defined (__x86_64__)
 					#define BT_USE_SIMD_VECTOR3
 					#define BT_USE_SSE
@@ -287,9 +292,14 @@ inline int btGetVersion()
 #if defined(BT_USE_DOUBLE_PRECISION)
 	typedef double btScalar;
 	//this number could be bigger in double precision
-	#define BT_LARGE_FLOAT 1e30
+	// #define BT_LARGE_FLOAT 1e30
+#elif defined(BT_USE_FIXED_POINT)
+	typedef fp64 btScalar;
+	#define BT_LARGE_FLOAT 741455 
+	#define BT_SMALL_FLOAT 1e-6
 #else
 	typedef float btScalar;
+	typedef float btLgScalar;
 	//keep BT_LARGE_FLOAT*BT_LARGE_FLOAT < FLT_MAX
 	#define BT_LARGE_FLOAT 1e18f
 #endif
@@ -438,9 +448,26 @@ inline int btGetVersion()
 	SIMD_FORCE_INLINE btScalar btLog(btScalar x) { return log(x); }
 	SIMD_FORCE_INLINE btScalar btPow(btScalar x, btScalar y) { return pow(x, y); }
 	SIMD_FORCE_INLINE btScalar btFmod(btScalar x, btScalar y) { return fmod(x, y); }
+#elif defined(BT_USE_FIXED_POINT)
+
+	SIMD_FORCE_INLINE btScalar btAtan2Fast(btScalar y, btScalar x);
+
+	SIMD_FORCE_INLINE btScalar btSqrt(btScalar x) { return x.sqrt();}
+	SIMD_FORCE_INLINE btScalar btFabs(btScalar x) { return x.value > 0 ? x : -x; }
+	SIMD_FORCE_INLINE btScalar btCos(btScalar x) { return x.cos(); }
+	SIMD_FORCE_INLINE btScalar btSin(btScalar x) { return x.sin(); }
+	SIMD_FORCE_INLINE btScalar btTan(btScalar x) { return x.tan(); }
+	SIMD_FORCE_INLINE btScalar btAcos(btScalar x) { return x.acos(); }
+	SIMD_FORCE_INLINE btScalar btAsin(btScalar x) { return x.asin(); }
+	SIMD_FORCE_INLINE btScalar btAtan(btScalar x) { return x.atan(); }
+	SIMD_FORCE_INLINE btScalar btAtan2(btScalar x, btScalar y) { return fp64::atan2(x, y); }
+	SIMD_FORCE_INLINE btScalar btPow(btScalar x, btScalar y) { assert(0); return 0;}
+	SIMD_FORCE_INLINE btScalar btFmod(btScalar x, btScalar y) { assert(0); return 0;}
+	SIMD_FORCE_INLINE btScalar btFloor(btScalar x) { return fp64::floor(x); }
 
 #else//BT_USE_DOUBLE_PRECISION
 
+	SIMD_FORCE_INLINE btScalar btFloor(btScalar x) { return floor(x); }
 	SIMD_FORCE_INLINE btScalar btSqrt(btScalar y)
 	{
 	#ifdef USE_APPROXIMATION
@@ -501,7 +528,12 @@ inline int btGetVersion()
 
 #endif//BT_USE_DOUBLE_PRECISION
 
+#if defined(BT_USE_FIXED_POINT)
 #define SIMD_PI btScalar(3.1415926535897932384626433832795029)
+#else
+#define SIMD_PI btScalar(3.1415926535897932384626433832795029)
+#endif
+
 #define SIMD_2_PI (btScalar(2.0) * SIMD_PI)
 #define SIMD_HALF_PI (SIMD_PI * btScalar(0.5))
 #define SIMD_RADS_PER_DEG (SIMD_2_PI / btScalar(360.0))
@@ -511,12 +543,19 @@ inline int btGetVersion()
 #define btRecip(x) (btScalar(1.0) / btScalar(x))
 
 #ifdef BT_USE_DOUBLE_PRECISION
-	#define SIMD_EPSILON DBL_EPSILON
-	#define SIMD_INFINITY DBL_MAX
-	#define BT_ONE 1.0
-	#define BT_ZERO 0.0
-	#define BT_TWO 2.0
-	#define BT_HALF 0.5
+	#define SIMD_EPSILON btScalar(FLT_EPSILON)
+	#define SIMD_INFINITY btScalar(FLT_MAX)
+	#define BT_ONE btScalar(1.0f)
+	#define BT_ZERO btScalar(0.0f)
+	#define BT_TWO btScalar(2.0f)
+	#define BT_HALF btScalar(0.5f)
+#elif defined(BT_USE_FIXED_POINT)
+	#define SIMD_EPSILON btScalar(FLT_EPSILON)
+	#define SIMD_INFINITY btScalar(4294967296.0) 
+	#define BT_ONE btScalar(1.0f) 
+	#define BT_ZERO btScalar(0.0f)
+	#define BT_TWO btScalar(2.0f)
+	#define BT_HALF btScalar(0.5f)
 #else
 	#define SIMD_EPSILON FLT_EPSILON
 	#define SIMD_INFINITY FLT_MAX

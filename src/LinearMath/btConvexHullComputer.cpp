@@ -827,7 +827,7 @@ class btConvexHullInternal
 	public:
 		Vertex* vertexList;
 
-		void compute(const void* coords, bool doubleCoords, int stride, int count);
+		void compute(const void* coords, int stride, int count);
 
 		btVector3 getCoordinates(const Vertex* v);
 
@@ -1954,31 +1954,17 @@ class pointCmp
 		}
 };
 
-void btConvexHullInternal::compute(const void* coords, bool doubleCoords, int stride, int count)
+void btConvexHullInternal::compute(const void* coords, int stride, int count)
 {
-	btVector3 min(btScalar(1e30), btScalar(1e30), btScalar(1e30)), max(btScalar(-1e30), btScalar(-1e30), btScalar(-1e30));
-	const char* ptr = (const char*) coords;
-	if (doubleCoords)
+	btVector3 min(btScalar(SIMD_INFINITY), btScalar(SIMD_INFINITY), btScalar(SIMD_INFINITY)), max(btScalar(-SIMD_INFINITY), btScalar(-SIMD_INFINITY), btScalar(-SIMD_INFINITY));
+	const btScalar* ptr = (const btScalar*) coords;
+	for (int i = 0; i < count; i++)
 	{
-		for (int i = 0; i < count; i++)
-		{
-			const double* v = (const double*) ptr;
-			btVector3 p((btScalar) v[0], (btScalar) v[1], (btScalar) v[2]);
-			ptr += stride;
-			min.setMin(p);
-			max.setMax(p);
-		}
-	}
-	else
-	{
-		for (int i = 0; i < count; i++)
-		{
-			const float* v = (const float*) ptr;
-			btVector3 p(v[0], v[1], v[2]);
-			ptr += stride;
-			min.setMin(p);
-			max.setMax(p);
-		}
+		const btScalar* v = (const btScalar*) ptr;
+		btVector3 p(v[0], v[1], v[2]);
+		ptr += stride;
+		min.setMin(p);
+		max.setMax(p);
 	}
 
 	btVector3 s = max - min;
@@ -2014,34 +2000,17 @@ void btConvexHullInternal::compute(const void* coords, bool doubleCoords, int st
 
 	btAlignedObjectArray<Point32> points;
 	points.resize(count);
-	ptr = (const char*) coords;
-	if (doubleCoords)
+	ptr = (const btScalar*) coords;
+	for (int i = 0; i < count; i++)
 	{
-		for (int i = 0; i < count; i++)
-		{
-			const double* v = (const double*) ptr;
-			btVector3 p((btScalar) v[0], (btScalar) v[1], (btScalar) v[2]);
-			ptr += stride;
-			p = (p - center) * s;
-			points[i].x = (int32_t) p[medAxis];
-			points[i].y = (int32_t) p[maxAxis];
-			points[i].z = (int32_t) p[minAxis];
-			points[i].index = i;
-		}
-	}
-	else
-	{
-		for (int i = 0; i < count; i++)
-		{
-			const float* v = (const float*) ptr;
-			btVector3 p(v[0], v[1], v[2]);
-			ptr += stride;
-			p = (p - center) * s;
-			points[i].x = (int32_t) p[medAxis];
-			points[i].y = (int32_t) p[maxAxis];
-			points[i].z = (int32_t) p[minAxis];
-			points[i].index = i;
-		}
+		const btScalar* v = (const btScalar*) ptr;
+		btVector3 p(v[0], v[1], v[2]);
+		ptr += stride;
+		p = (p - center) * s;
+		points[i].x = (int32_t) p[medAxis];
+		points[i].y = (int32_t) p[maxAxis];
+		points[i].z = (int32_t) p[minAxis];
+		points[i].index = i;
 	}
 	points.quickSort(pointCmp());
 
@@ -2655,7 +2624,7 @@ static int getVertexCopy(btConvexHullInternal::Vertex* vertex, btAlignedObjectAr
 	return index;
 }
 
-btScalar btConvexHullComputer::compute(const void* coords, bool doubleCoords, int stride, int count, btScalar shrink, btScalar shrinkClamp)
+btScalar btConvexHullComputer::compute(const void* coords, int stride, int count, btScalar shrink, btScalar shrinkClamp)
 {
 	if (count <= 0)
 	{
@@ -2666,7 +2635,7 @@ btScalar btConvexHullComputer::compute(const void* coords, bool doubleCoords, in
 	}
 
 	btConvexHullInternal hull;
-	hull.compute(coords, doubleCoords, stride, count);
+	hull.compute(coords, stride, count);
 
 	btScalar shift = 0;
 	if ((shrink > 0) && ((shift = hull.shrink(shrink, shrinkClamp)) < 0))

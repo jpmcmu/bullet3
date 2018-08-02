@@ -168,12 +168,13 @@ SIMD_FORCE_INLINE	int	btPoint2PointConstraint::calculateSerializeBufferSize() co
 	///fills the dataBuffer and returns the struct name (and 0 on failure)
 SIMD_FORCE_INLINE	const char*	btPoint2PointConstraint::serialize(void* dataBuffer, btSerializer* serializer) const
 {
+	/*
 	btPoint2PointConstraintData2* p2pData = (btPoint2PointConstraintData2*)dataBuffer;
 
 	btTypedConstraint::serialize(&p2pData->m_typeConstraintData,serializer);
 	m_pivotInA.serialize(p2pData->m_pivotInA);
 	m_pivotInB.serialize(p2pData->m_pivotInB);
-
+	*/
 	return btPoint2PointConstraintDataName;
 }
 

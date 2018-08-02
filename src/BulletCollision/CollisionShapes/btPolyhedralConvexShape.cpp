@@ -134,7 +134,7 @@ bool	btPolyhedralConvexShape::initializePolyhedralFeatures(int shiftVerticesByMa
 			edge = edge->getNextEdgeOfFace();
 		} while (edge!=firstEdge);
 
-		btScalar planeEq = 1e30f;
+		btScalar planeEq = SIMD_INFINITY;
 
 		
 		if (numEdges==2)

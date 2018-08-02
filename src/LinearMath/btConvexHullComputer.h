@@ -24,7 +24,6 @@ subject to the following restrictions:
 class btConvexHullComputer
 {
 	private:
-		btScalar compute(const void* coords, bool doubleCoords, int stride, int count, btScalar shrink, btScalar shrinkClamp);
 
 	public:
 
@@ -86,16 +85,7 @@ class btConvexHullComputer
 
 		The output convex hull can be found in the member variables "vertices", "edges", "faces".
 		*/
-		btScalar compute(const float* coords, int stride, int count, btScalar shrink, btScalar shrinkClamp)
-		{
-			return compute(coords, false, stride, count, shrink, shrinkClamp);
-		}
-
-		// same as above, but double precision
-		btScalar compute(const double* coords, int stride, int count, btScalar shrink, btScalar shrinkClamp)
-		{
-			return compute(coords, true, stride, count, shrink, shrinkClamp);
-		}
+		btScalar compute(const void* coords, int stride, int count, btScalar shrink, btScalar shrinkClamp);
 };
 
 

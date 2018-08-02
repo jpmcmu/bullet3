@@ -1,6 +1,5 @@
 INCLUDE_DIRECTORIES( ${BULLET_PHYSICS_SOURCE_DIR}/src  )
-
-
+INCLUDE_DIRECTORIES( ${BULLET_PHYSICS_SOURCE_DIR}/../../include/Common/)
 
 SET(BulletDynamics_SRCS
 	Character/btKinematicCharacterController.cpp

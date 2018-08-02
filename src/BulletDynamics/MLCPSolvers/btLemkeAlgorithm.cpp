@@ -90,7 +90,7 @@ btScalar btEpsRoot() {
 	//
 	A.setSubMatrix(0, 0, dim - 1, dim - 1,ident);
 	A.setSubMatrix(0, dim, dim - 1, 2 * dim - 1,mNeg);
-	A.setSubMatrix(0, 2 * dim, dim - 1, 2 * dim, -1.f);
+	A.setSubMatrix(0, 2 * dim, dim - 1, 2 * dim, btScalar(-1.f));
 	A.setSubMatrix(0, 2 * dim + 1, dim - 1, 2 * dim + 1,m_q);
 
 #ifdef BT_DEBUG_OSTREAM
@@ -107,7 +107,7 @@ btScalar btEpsRoot() {
       basis.push_back(i);
 
 	int pivotRowIndex = -1;
-	btScalar minValue = 1e30f;
+	btScalar minValue = SIMD_INFINITY;
 	bool greaterZero = true;
 	for (int i=0;i<dim;i++)
 	{
@@ -287,7 +287,7 @@ btScalar btEpsRoot() {
   //  if (DEBUGLEVEL)
     //  cout << "v " << v << endl;
 
-    while(i < v.size()-1 && fabs(v[i]) < btMachEps())
+    while(i < v.size()-1 && btFabs(v[i]) < btMachEps())
       i++;
     if (v[i] > 0)
       return true;

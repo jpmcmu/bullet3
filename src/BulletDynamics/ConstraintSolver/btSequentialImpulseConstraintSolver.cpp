@@ -297,7 +297,7 @@ static btSimdScalar gResolveSplitPenetrationImpulse_scalar_reference(
 {
 	btScalar deltaImpulse = 0.f;
 
-		if (c.m_rhsPenetration)
+		if (c.m_rhsPenetration != 0)
         {
 			gNumSplitImpulseRecoveries++;
 			deltaImpulse = c.m_rhsPenetration-btScalar(c.m_appliedPushImpulse)*c.m_cfm;
@@ -807,7 +807,7 @@ int	btSequentialImpulseConstraintSolver::getOrInitSolverBody(btCollisionObject& 
 	{
 		btRigidBody* rb = btRigidBody::upcast(&body);
 		//convert both active and kinematic objects (for their velocity)
-		if (rb && (rb->getInvMass() || rb->isKinematicObject()))
+		if (rb && (rb->getInvMass() != 0 || rb->isKinematicObject()))
 		{
 			solverBodyIdA = m_tmpSolverBodyPool.size();
 			btSolverBody& solverBody = m_tmpSolverBodyPool.expand();
@@ -1023,7 +1023,7 @@ void btSequentialImpulseConstraintSolver::setupContactConstraint(btSolverConstra
 					}
 					solverConstraint.m_cfm = cfm*solverConstraint.m_jacDiagABInv;
 					solverConstraint.m_lowerLimit = 0;
-					solverConstraint.m_upperLimit = 1e10f;
+					solverConstraint.m_upperLimit = BT_LARGE_FLOAT;
 				}
 
 
@@ -1366,7 +1366,7 @@ btScalar btSequentialImpulseConstraintSolver::solveGroupCacheFriendlySetup(btCol
 		int bodyId = getOrInitSolverBody(*bodies[i],infoGlobal.m_timeStep);
 
 		btRigidBody* body = btRigidBody::upcast(bodies[i]);
-		if (body && body->getInvMass())
+		if (body && body->getInvMass() != 0)
 		{
 			btSolverBody& solverBody = m_tmpSolverBodyPool[bodyId];
 			btVector3 gyroForce (0,0,0);

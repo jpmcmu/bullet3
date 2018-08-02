@@ -188,6 +188,7 @@ const char*	btConvexHullShape::serialize(void* dataBuffer, btSerializer* seriali
 	btConvexHullShapeData* shapeData = (btConvexHullShapeData*) dataBuffer;
 	btConvexInternalShape::serialize(&shapeData->m_convexInternalShapeData, serializer);
 
+	/*
 	int numElem = m_unscaledPoints.size();
 	shapeData->m_numUnscaledPoints = numElem;
 #ifdef BT_USE_DOUBLE_PRECISION
@@ -214,6 +215,7 @@ const char*	btConvexHullShape::serialize(void* dataBuffer, btSerializer* seriali
 
 	// Fill padding with zeros to appease msan.
 	memset(shapeData->m_padding3, 0, sizeof(shapeData->m_padding3));
+	*/
 
 	return "btConvexHullShapeData";
 }

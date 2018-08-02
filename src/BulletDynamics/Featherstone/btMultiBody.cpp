@@ -1993,6 +1993,7 @@ int	btMultiBody::calculateSerializeBufferSize()	const
 	///fills the dataBuffer and returns the struct name (and 0 on failure)
 const char*	btMultiBody::serialize(void* dataBuffer, class btSerializer* serializer) const
 {
+	/*
 		btMultiBodyData* mbd = (btMultiBodyData*) dataBuffer;
 		getBasePos().serialize(mbd->m_baseWorldPosition);
 		getWorldToBaseRot().inverse().serialize(mbd->m_baseWorldOrientation);
@@ -2086,6 +2087,6 @@ const char*	btMultiBody::serialize(void* dataBuffer, class btSerializer* seriali
 #ifdef BT_USE_DOUBLE_PRECISION
 		memset(mbd->m_padding, 0, sizeof(mbd->m_padding));
 #endif
-
+	*/
 		return btMultiBodyDataName;
 }

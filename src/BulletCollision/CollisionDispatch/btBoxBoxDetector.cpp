@@ -230,7 +230,7 @@ void cullPoints2 (int n, btScalar p[], int m, int i0, int iret[])
   for (j=1; j<m; j++) {
     a = btScalar(j)*(2*M__PI/m) + A[i0];
     if (a > M__PI) a -= 2*M__PI;
-    btScalar maxdiff=1e9,diff;
+    btScalar maxdiff=BT_LARGE_FLOAT,diff;
 
     *iret = i0;			// iret is not allowed to keep this value, but it sometimes does, when diff=#QNAN0
 

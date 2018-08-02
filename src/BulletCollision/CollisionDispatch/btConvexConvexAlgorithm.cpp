@@ -504,7 +504,7 @@ void btConvexConvexAlgorithm ::processCollision (const btCollisionObjectWrapper*
 
 			btScalar threshold = m_manifoldPtr->getContactBreakingThreshold();
 
-			btScalar minDist = -1e30f;
+			btScalar minDist = -SIMD_INFINITY;
 			btVector3 sepNormalWorldSpace;
 			bool foundSepAxis  = true;
 
@@ -575,7 +575,7 @@ void btConvexConvexAlgorithm ::processCollision (const btCollisionObjectWrapper*
 				btScalar threshold = m_manifoldPtr->getContactBreakingThreshold();
 
 				btVector3 sepNormalWorldSpace;
-				btScalar minDist =-1e30f;
+				btScalar minDist =-SIMD_INFINITY;
 				btScalar maxDist = threshold;
 				
 				bool foundSepAxis = false;

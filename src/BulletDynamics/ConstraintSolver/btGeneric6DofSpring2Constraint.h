@@ -595,6 +595,7 @@ SIMD_FORCE_INLINE int btGeneric6DofSpring2Constraint::calculateSerializeBufferSi
 
 SIMD_FORCE_INLINE const char* btGeneric6DofSpring2Constraint::serialize(void* dataBuffer, btSerializer* serializer) const
 {
+	/*
 	btGeneric6DofSpring2ConstraintData2* dof = (btGeneric6DofSpring2ConstraintData2*)dataBuffer;
 	btTypedConstraint::serialize(&dof->m_typeConstraintData,serializer);
 
@@ -604,19 +605,19 @@ SIMD_FORCE_INLINE const char* btGeneric6DofSpring2Constraint::serialize(void* da
 	int i;
 	for (i=0;i<3;i++)
 	{
-		dof->m_angularLowerLimit.m_floats[i]       = m_angularLimits[i].m_loLimit;
-		dof->m_angularUpperLimit.m_floats[i]       = m_angularLimits[i].m_hiLimit;
-		dof->m_angularBounce.m_floats[i]           = m_angularLimits[i].m_bounce;
-		dof->m_angularStopERP.m_floats[i]          = m_angularLimits[i].m_stopERP;
-		dof->m_angularStopCFM.m_floats[i]          = m_angularLimits[i].m_stopCFM;
-		dof->m_angularMotorERP.m_floats[i]         = m_angularLimits[i].m_motorERP;
-		dof->m_angularMotorCFM.m_floats[i]         = m_angularLimits[i].m_motorCFM;
-		dof->m_angularTargetVelocity.m_floats[i]   = m_angularLimits[i].m_targetVelocity;
-		dof->m_angularMaxMotorForce.m_floats[i]    = m_angularLimits[i].m_maxMotorForce;
-		dof->m_angularServoTarget.m_floats[i]      = m_angularLimits[i].m_servoTarget;
-		dof->m_angularSpringStiffness.m_floats[i]  = m_angularLimits[i].m_springStiffness;
-		dof->m_angularSpringDamping.m_floats[i]    = m_angularLimits[i].m_springDamping;
-		dof->m_angularEquilibriumPoint.m_floats[i] = m_angularLimits[i].m_equilibriumPoint;
+		dof->m_angularLowerLimit.m_floats[i]       = (float)m_angularLimits[i].m_loLimit;
+		dof->m_angularUpperLimit.m_floats[i]       = (float)m_angularLimits[i].m_hiLimit;
+		dof->m_angularBounce.m_floats[i]           = (float)m_angularLimits[i].m_bounce;
+		dof->m_angularStopERP.m_floats[i]          = (float)m_angularLimits[i].m_stopERP;
+		dof->m_angularStopCFM.m_floats[i]          = (float)m_angularLimits[i].m_stopCFM;
+		dof->m_angularMotorERP.m_floats[i]         = (float)m_angularLimits[i].m_motorERP;
+		dof->m_angularMotorCFM.m_floats[i]         = (float)m_angularLimits[i].m_motorCFM;
+		dof->m_angularTargetVelocity.m_floats[i]   = (float)m_angularLimits[i].m_targetVelocity;
+		dof->m_angularMaxMotorForce.m_floats[i]    = (float)m_angularLimits[i].m_maxMotorForce;
+		dof->m_angularServoTarget.m_floats[i]      = (float)m_angularLimits[i].m_servoTarget;
+		dof->m_angularSpringStiffness.m_floats[i]  = (float)m_angularLimits[i].m_springStiffness;
+		dof->m_angularSpringDamping.m_floats[i]    = (float)m_angularLimits[i].m_springDamping;
+		dof->m_angularEquilibriumPoint.m_floats[i] = (float)m_angularLimits[i].m_equilibriumPoint;
 	}
 	dof->m_angularLowerLimit.m_floats[3]       = 0;
 	dof->m_angularUpperLimit.m_floats[3]       = 0;
@@ -668,7 +669,7 @@ SIMD_FORCE_INLINE const char* btGeneric6DofSpring2Constraint::serialize(void* da
 	dof->m_padding1[1] = 0;
 	dof->m_padding1[2] = 0;
 	dof->m_padding1[3] = 0;
-
+	*/
 	return btGeneric6DofSpring2ConstraintDataName;
 }
 

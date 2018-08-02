@@ -266,8 +266,10 @@ struct	btTransformDoubleData
 
 SIMD_FORCE_INLINE	void	btTransform::serialize(btTransformData& dataOut) const
 {
+	/*
 	m_basis.serialize(dataOut.m_basis);
 	m_origin.serialize(dataOut.m_origin);
+	*/
 }
 
 SIMD_FORCE_INLINE	void	btTransform::serializeFloat(btTransformFloatData& dataOut) const

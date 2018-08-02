@@ -133,13 +133,14 @@ SIMD_FORCE_INLINE	int	btGearConstraint::calculateSerializeBufferSize() const
 	///fills the dataBuffer and returns the struct name (and 0 on failure)
 SIMD_FORCE_INLINE	const char*	btGearConstraint::serialize(void* dataBuffer, btSerializer* serializer) const
 {
+	/*
 	btGearConstraintData* gear = (btGearConstraintData*)dataBuffer;
 	btTypedConstraint::serialize(&gear->m_typeConstraintData,serializer);
 
 	m_axisInA.serialize( gear->m_axisInA );
 	m_axisInB.serialize( gear->m_axisInB );
 
-	gear->m_ratio = m_ratio;
+	gear->m_ratio = (float) m_ratio;
 
 	// Fill padding with zeros to appease msan.
 #ifndef BT_USE_DOUBLE_PRECISION
@@ -148,6 +149,7 @@ SIMD_FORCE_INLINE	const char*	btGearConstraint::serialize(void* dataBuffer, btSe
 	gear->m_padding[2] = 0;
 	gear->m_padding[3] = 0;
 #endif
+	*/
 
 	return btGearConstraintDataName;
 }

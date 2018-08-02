@@ -1315,8 +1315,10 @@ struct	btMatrix3x3DoubleData
 
 SIMD_FORCE_INLINE	void	btMatrix3x3::serialize(struct	btMatrix3x3Data& dataOut) const
 {
+	/*
 	for (int i=0;i<3;i++)
 		m_el[i].serialize(dataOut.m_el[i]);
+	*/
 }
 
 SIMD_FORCE_INLINE	void	btMatrix3x3::serializeFloat(struct	btMatrix3x3FloatData& dataOut) const

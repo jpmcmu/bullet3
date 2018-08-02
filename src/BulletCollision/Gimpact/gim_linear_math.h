@@ -397,7 +397,7 @@ Takes two vectors a, b, blends them together with s <=1 */
 //! Finds the bigger cartesian coordinate from a vector
 #define VEC_MAYOR_COORD(vec, maxc)\
 {\
-	GREAL A[] = {fabs(vec[0]),fabs(vec[1]),fabs(vec[2])};\
+	GREAL A[] = {btFabs(vec[0]),btFabs(vec[1]),btFabs(vec[2])};\
     maxc =  A[0]>A[1]?(A[0]>A[2]?0:2):(A[1]>A[2]?1:2);\
 }\
 

@@ -127,7 +127,7 @@ void btGjkPairDetector::getClosestPointsNonVirtual(const ClosestPointInput& inpu
 	m_lastUsedMethod = -1;
 
 	{
-		btScalar squaredDistance = BT_LARGE_FLOAT;
+		btScalar squaredDistance = SIMD_INFINITY;
 		btScalar delta = btScalar(0.);
 		
 		btScalar margin = marginA + marginB;
@@ -248,10 +248,10 @@ void btGjkPairDetector::getClosestPointsNonVirtual(const ClosestPointInput& inpu
 
                               printf("btGjkPairDetector maxIter exceeded:%i\n",m_curIter);   
                               printf("sepAxis=(%f,%f,%f), squaredDistance = %f, shapeTypeA=%i,shapeTypeB=%i\n",   
-                              m_cachedSeparatingAxis.getX(),   
-                              m_cachedSeparatingAxis.getY(),   
-                              m_cachedSeparatingAxis.getZ(),   
-                              squaredDistance,   
+                              (float)m_cachedSeparatingAxis.getX(),   
+                              (float)m_cachedSeparatingAxis.getY(),   
+                              (float)m_cachedSeparatingAxis.getZ(),   
+                              (float)squaredDistance,   
                               m_minkowskiA->getShapeType(),   
                               m_minkowskiB->getShapeType());   
 

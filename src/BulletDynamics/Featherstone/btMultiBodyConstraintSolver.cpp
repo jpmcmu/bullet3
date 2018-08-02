@@ -756,7 +756,7 @@ void btMultiBodyConstraintSolver::setupMultiBodyContactConstraint(btMultiBodySol
 	{
 		solverConstraint.m_appliedImpulse = isFriction ? 0 : cp.m_appliedImpulse * infoGlobal.m_warmstartingFactor;
 
-		if (solverConstraint.m_appliedImpulse)
+		if (solverConstraint.m_appliedImpulse != 0)
 		{
 			if (multiBodyA)
 			{
@@ -829,7 +829,7 @@ void btMultiBodyConstraintSolver::setupMultiBodyContactConstraint(btMultiBodySol
 			}
 			*/
 			solverConstraint.m_lowerLimit = 0;
-			solverConstraint.m_upperLimit = 1e10f;
+			solverConstraint.m_upperLimit = BT_LARGE_FLOAT;
 		}
 		else
 		{

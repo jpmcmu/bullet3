@@ -69,7 +69,7 @@ struct btVectorX
 	
 	T nrm2() const
 	{
-		T norm = T(0);
+		T norm = T(0.0);
 		
 		int nn = rows();
 		
@@ -106,7 +106,7 @@ struct btVectorX
 						}
 					}
 				}
-				norm = scale * sqrt(ssq);
+				norm = scale * btSqrt(ssq);
 			}
 		}
 		return norm;
@@ -217,7 +217,7 @@ struct btMatrixX
 
 	void addElem(int row,int col, T val)
 	{
-		if (val)
+		if (val != 0)
 		{
 			if (m_storage[col+row*m_cols]==0.f)
 			{
@@ -286,7 +286,7 @@ struct btMatrixX
 		setZero();
 		for (int row=0;row<rows();row++)
 		{
-			setElem(row,row,1);
+			setElem(row,row,1.0);
 		}
 	}
 
@@ -332,7 +332,7 @@ struct btMatrixX
 			for (int j=0;j<m_rows;j++)
 			{
 				T v = (*this)(j,i);
-				if (v)
+				if (v != 0)
 				{
 					tr.setElem(i,j,v);
 				}
@@ -354,7 +354,7 @@ struct btMatrixX
 			{
 				for (int i=0; i < res.rows(); ++i)
 				{
-					T dotProd=0;
+					T dotProd=0.0;
 //					T dotProd2=0;
 					//int waste=0,waste2=0;
 
@@ -372,7 +372,7 @@ struct btMatrixX
 							}
 						}
 					}
-					if (dotProd)
+					if (dotProd != 0)
 						res.setElem(i,j,dotProd);
 				}
 			}
@@ -530,13 +530,8 @@ std::ostream& operator<< (std::ostream& os, const btVectorX<T>& mat)
 
 #endif //BT_DEBUG_OSTREAM
 
-
-inline void setElem(btMatrixXd& mat, int row, int col, double val)
-{
-	mat.setElem(row,col,val);
-}
-
-inline void setElem(btMatrixXf& mat, int row, int col, float val)
+template <typename T>
+inline void setElem(btMatrixX<T>& mat, int row, int col, T val)
 {
 	mat.setElem(row,col,val);
 }
@@ -544,6 +539,9 @@ inline void setElem(btMatrixXf& mat, int row, int col, float val)
 #ifdef BT_USE_DOUBLE_PRECISION
 	#define btVectorXu btVectorXd
 	#define btMatrixXu btMatrixXd
+#elif defined(BT_USE_FIXED_POINT)
+	#define btVectorXu btVectorX<btScalar>
+	#define btMatrixXu btMatrixX<btScalar>
 #else
 	#define btVectorXu btVectorXf
 	#define btMatrixXu btMatrixXf

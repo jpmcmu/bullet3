@@ -168,8 +168,9 @@ void			btRigidBody::applyDamping(btScalar timeStep)
 	m_linearVelocity *= GEN_clamped((btScalar(1.) - timeStep * m_linearDamping), (btScalar)btScalar(0.0), (btScalar)btScalar(1.0));
 	m_angularVelocity *= GEN_clamped((btScalar(1.) - timeStep * m_angularDamping), (btScalar)btScalar(0.0), (btScalar)btScalar(1.0));
 #else
-	m_linearVelocity *= btPow(btScalar(1)-m_linearDamping, timeStep);
-	m_angularVelocity *= btPow(btScalar(1)-m_angularDamping, timeStep);
+	// Timestep is fixed so precalculated damping to include the power to avoid implementing btPow
+	// m_linearVelocity *= (1 - m_linearDamping);	//btPow(btScalar(1)-m_linearDamping, timeStep);
+	// m_angularVelocity *= (1 - m_angularDamping); //btPow(btScalar(1)-m_angularDamping, timeStep);
 #endif
 
 	if (m_additionalDamping)
@@ -482,6 +483,7 @@ int	btRigidBody::calculateSerializeBufferSize()	const
 	///fills the dataBuffer and returns the struct name (and 0 on failure)
 const char*	btRigidBody::serialize(void* dataBuffer, class btSerializer* serializer) const
 {
+	/*
 	btRigidBodyData* rbd = (btRigidBodyData*) dataBuffer;
 
 	btCollisionObject::serialize(&rbd->m_collisionObjectData, serializer);
@@ -511,7 +513,7 @@ const char*	btRigidBody::serialize(void* dataBuffer, class btSerializer* seriali
 #ifdef BT_USE_DOUBLE_PRECISION
 	memset(rbd->m_padding, 0, sizeof(rbd->m_padding));
 #endif
-
+	*/
 	return btRigidBodyDataName;
 }
 

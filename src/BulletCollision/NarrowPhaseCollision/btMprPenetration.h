@@ -39,7 +39,7 @@ struct btMprCollisionDescription
     btMprCollisionDescription()
     :	m_firstDir(0,1,0),
         m_maxGjkIterations(1000),
-        m_maximumDistanceSquared(1e30f),
+        m_maximumDistanceSquared(SIMD_INFINITY),
         m_gjkRelError2(1.0e-6)
     {
     }
@@ -62,7 +62,7 @@ struct btMprDistanceInfo
 #define BT_MPR_SQRT sqrt
 #endif
 #define BT_MPR_FMIN(x, y) ((x) < (y) ? (x) : (y))
-#define BT_MPR_FABS fabs
+#define BT_MPR_FABS btFabs
 
 #define BT_MPR_TOLERANCE 1E-6f
 #define BT_MPR_MAX_ITERATIONS 1000

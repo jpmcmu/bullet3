@@ -82,7 +82,7 @@ inline void GrahamScanConvexHull2D(btAlignedObjectArray<GrahamVector3>& original
 	}
 
 	//also precompute angles
-	originalPoints[0].m_angle = -1e30f;
+	originalPoints[0].m_angle = -SIMD_INFINITY;
 	for (int i=1;i<originalPoints.size();i++)
 	{
 	    btVector3 ar = originalPoints[i]-originalPoints[0];
