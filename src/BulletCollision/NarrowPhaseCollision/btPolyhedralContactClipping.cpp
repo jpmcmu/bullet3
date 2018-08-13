@@ -247,7 +247,7 @@ bool btPolyhedralContactClipping::findSeparatingAxis(	const btConvexPolyhedron& 
 	const btVector3 DeltaC2 = c0 - c1;
 //#endif
 
-	btScalar dmin = FLT_MAX;
+	btScalar dmin = SIMD_INFINITY;
 	int curPlaneTests=0;
 
 	int numFacesA = hullA.m_faces.size();
@@ -420,7 +420,7 @@ void	btPolyhedralContactClipping::clipFaceAgainstHull(const btVector3& separatin
 
 	int closestFaceA=-1;
 	{
-		btScalar dmin = FLT_MAX;
+		btScalar dmin = SIMD_INFINITY;
 		for(int face=0;face<hullA.m_faces.size();face++)
 		{
 			const btVector3 Normal(hullA.m_faces[face].m_plane[0], hullA.m_faces[face].m_plane[1], hullA.m_faces[face].m_plane[2]);
@@ -538,7 +538,7 @@ void	btPolyhedralContactClipping::clipHullAgainstHull(const btVector3& separatin
 
 
 	int closestFaceB=-1;
-	btScalar dmax = -FLT_MAX;
+	btScalar dmax = -SIMD_INFINITY;
 	{
 		for(int face=0;face<hullB.m_faces.size();face++)
 		{

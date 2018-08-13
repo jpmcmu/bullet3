@@ -79,7 +79,7 @@ static btVector3 convexHullSupport (const btVector3& localDirOrg, const btVector
 
 	btVector3 localDir = vec;
 
-	vec_float4 v_distMax = {-FLT_MAX,0,0,0};
+	vec_float4 v_distMax = {-SIMD_INFINITY,0,0,0};
 	vec_int4 v_idxMax = {-999,0,0,0};
 	int v=0;
 	int numverts = numPoints;

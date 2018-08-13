@@ -410,9 +410,9 @@ bool	btVoronoiSimplexSolver::closestPtPointTriangle(const btVector3& p, const bt
     }
 
     // P inside face region. Compute Q through its barycentric coordinates (u,v,w)
-    btScalar denom = btScalar(1.0) / (va + vb + vc);
-    btScalar v = vb * denom;
-    btScalar w = vc * denom;
+    btScalar denom = (va + vb + vc);
+    btScalar v = vb / denom;
+    btScalar w = vc / denom;
     
 	result.m_closestPointOnSimplex = a + ab * v + ac * w;
 	result.m_usedVertices.usedVertexA = true;
@@ -486,7 +486,7 @@ bool	btVoronoiSimplexSolver::closestPtPointTetrahedron(const btVector3& p, const
 	 }
 
 
-    btScalar bestSqDist = FLT_MAX;
+    btScalar bestSqDist = SIMD_INFINITY;
     // If point outside face abc then compute closest point on abc
 	if (pointOutsideABC) 
 	{

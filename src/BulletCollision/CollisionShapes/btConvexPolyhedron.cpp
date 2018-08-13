@@ -197,7 +197,7 @@ void	btConvexPolyhedron::initialize()
 #ifdef TEST_INTERNAL_OBJECTS
 	if(1)
 	{
-		m_radius = FLT_MAX;
+		m_radius = SIMD_INFINITY;
 		for(int i=0;i<m_faces.size();i++)
 		{
 			const btVector3 Normal(m_faces[i].m_plane[0], m_faces[i].m_plane[1], m_faces[i].m_plane[2]);
@@ -207,12 +207,12 @@ void	btConvexPolyhedron::initialize()
 		}
 
 	
-		btScalar MinX = FLT_MAX;
-		btScalar MinY = FLT_MAX;
-		btScalar MinZ = FLT_MAX;
-		btScalar MaxX = -FLT_MAX;
-		btScalar MaxY = -FLT_MAX;
-		btScalar MaxZ = -FLT_MAX;
+		btScalar MinX = SIMD_INFINITY;
+		btScalar MinY = SIMD_INFINITY;
+		btScalar MinZ = SIMD_INFINITY;
+		btScalar MaxX = -SIMD_INFINITY;
+		btScalar MaxY = -SIMD_INFINITY;
+		btScalar MaxZ = -SIMD_INFINITY;
 		for(int i=0; i<m_vertices.size(); i++)
 		{
 			const btVector3& pt = m_vertices[i];
@@ -277,8 +277,8 @@ void	btConvexPolyhedron::initialize()
 
 void btConvexPolyhedron::project(const btTransform& trans, const btVector3& dir, btScalar& minProj, btScalar& maxProj, btVector3& witnesPtMin,btVector3& witnesPtMax) const
 {
-	minProj = FLT_MAX;
-	maxProj = -FLT_MAX;
+	minProj = SIMD_INFINITY;
+	maxProj = -SIMD_INFINITY;
 	int numVerts = m_vertices.size();
 	for(int i=0;i<numVerts;i++)
 	{

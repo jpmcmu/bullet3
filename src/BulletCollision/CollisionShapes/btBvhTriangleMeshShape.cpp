@@ -133,7 +133,8 @@ void	btBvhTriangleMeshShape::performRaycast (btTriangleCallback* callback, const
 			for (int j=2;j>=0;j--)
 			{
 				int graphicsindex = indicestype==PHY_SHORT?((unsigned short*)gfxbase)[j]:gfxbase[j];
-				
+
+				assert(0);	
 				if (type == PHY_FLOAT)
 				{
 					float* graphicsbase = (float*)(vertexbase+graphicsindex*stride);

@@ -223,8 +223,8 @@ const char*	btConvexHullShape::serialize(void* dataBuffer, btSerializer* seriali
 void btConvexHullShape::project(const btTransform& trans, const btVector3& dir, btScalar& minProj, btScalar& maxProj, btVector3& witnesPtMin,btVector3& witnesPtMax) const
 {
 #if 1
-	minProj = FLT_MAX;
-	maxProj = -FLT_MAX;
+	minProj = SIMD_INFINITY;
+	maxProj = -SIMD_INFINITY;
 
 	int numVerts = m_unscaledPoints.size();
 	for(int i=0;i<numVerts;i++)

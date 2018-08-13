@@ -575,9 +575,9 @@ void btConeTwistConstraint::calcAngleInfo()
 		swing2 *= fact; 
 	}
 
-	btScalar RMaxAngle1Sq = 1.0f / (m_swingSpan1*m_swingSpan1);		
-	btScalar RMaxAngle2Sq = 1.0f / (m_swingSpan2*m_swingSpan2);	
-	btScalar EllipseAngle = btFabs(swing1*swing1)* RMaxAngle1Sq + btFabs(swing2*swing2) * RMaxAngle2Sq;
+	btScalar RMaxAngle1Sq = (m_swingSpan1*m_swingSpan1);		
+	btScalar RMaxAngle2Sq = (m_swingSpan2*m_swingSpan2);	
+	btScalar EllipseAngle = btFabs(swing1*swing1) / RMaxAngle1Sq + btFabs(swing2*swing2) / RMaxAngle2Sq;
 
 	if (EllipseAngle > 1.0f)
 	{

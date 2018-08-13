@@ -318,7 +318,7 @@ void	btOptimizedBvh::updateBvhNodes(btStridingMeshInterface* meshInterface,int f
 				
 				for (int j=2;j>=0;j--)
 				{
-					
+					assert(0);	
 					int graphicsindex = indicestype==PHY_SHORT?((unsigned short*)gfxbase)[j]:gfxbase[j];
 					if (type == PHY_FLOAT)
 					{

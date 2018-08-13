@@ -18,6 +18,7 @@ subject to the following restrictions:
 #define BT_SCALAR_H
 
 #define BT_USE_FIXED_POINT
+// #define BT_USE_DOUBLE_PRECISION
 
 #ifdef BT_MANAGED_CODE
 //Aligned data types not supported in managed code
@@ -260,7 +261,7 @@ inline int btGetVersion()
 
 			#else//__APPLE__
 
-				#define SIMD_FORCE_INLINE inline
+				#define SIMD_FORCE_INLINE __attribute__((always_inline)) inline
 				///@todo: check out alignment methods for other platforms/compilers
 				///#define ATTRIBUTE_ALIGNED16(a) a __attribute__ ((aligned (16)))
 				///#define ATTRIBUTE_ALIGNED64(a) a __attribute__ ((aligned (64)))
@@ -292,14 +293,13 @@ inline int btGetVersion()
 #if defined(BT_USE_DOUBLE_PRECISION)
 	typedef double btScalar;
 	//this number could be bigger in double precision
-	// #define BT_LARGE_FLOAT 1e30
+	#define BT_LARGE_FLOAT 1e18
 #elif defined(BT_USE_FIXED_POINT)
 	typedef fp64 btScalar;
 	#define BT_LARGE_FLOAT 741455 
 	#define BT_SMALL_FLOAT 1e-6
 #else
 	typedef float btScalar;
-	typedef float btLgScalar;
 	//keep BT_LARGE_FLOAT*BT_LARGE_FLOAT < FLT_MAX
 	#define BT_LARGE_FLOAT 1e18f
 #endif
@@ -448,6 +448,7 @@ inline int btGetVersion()
 	SIMD_FORCE_INLINE btScalar btLog(btScalar x) { return log(x); }
 	SIMD_FORCE_INLINE btScalar btPow(btScalar x, btScalar y) { return pow(x, y); }
 	SIMD_FORCE_INLINE btScalar btFmod(btScalar x, btScalar y) { return fmod(x, y); }
+	SIMD_FORCE_INLINE btScalar btFloor(btScalar x) { return floor(x); }
 #elif defined(BT_USE_FIXED_POINT)
 
 	SIMD_FORCE_INLINE btScalar btAtan2Fast(btScalar y, btScalar x);

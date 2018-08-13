@@ -179,8 +179,15 @@ btBroadphaseProxy*				btDbvtBroadphase::createProxy(	const btVector3& aabbMin,
 	btDbvtAabbMm aabb = btDbvtVolume::FromMM(aabbMin,aabbMax);
 
 	//bproxy->aabb			=	btDbvtVolume::FromMM(aabbMin,aabbMax);
+	int uniqueID = 0;
+	if (generateUID == nullptr) {
+		uniqueID = ++m_gid;
+	} else {
+		uniqueID = generateUID(userPtr);
+	}
+
 	proxy->stage		=	m_stageCurrent;
-	proxy->m_uniqueId	=	++m_gid;
+	proxy->m_uniqueId	=	uniqueID;
 	proxy->leaf			=	m_sets[0].insert(aabb,proxy);
 	listappend(proxy,m_stageRoots[m_stageCurrent]);
 	if(!m_deferedcollide)

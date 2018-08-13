@@ -49,7 +49,6 @@ m_box2(box2)
 // fields.
 struct dContactGeom;
 #define dDOTpq(a,b,p,q) ((a)[0]*(b)[0] + (a)[p]*(b)[q] + (a)[2*(p)]*(b)[2*(q)])
-#define dInfinity FLT_MAX
 
 
 /*PURE_INLINE btScalar dDOT   (const btScalar *a, const btScalar *b) { return dDOTpq(a,b,1,1); }
@@ -313,7 +312,7 @@ int dBoxBox2 (const btVector3& p1, const dMatrix3 R1,
     code = (cc); \
   }
 
-  s = -dInfinity;
+  s = -SIMD_INFINITY;
   invert_normal = 0;
   code = 0;
 
