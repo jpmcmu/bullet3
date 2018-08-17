@@ -53,7 +53,7 @@ btMultiSphereShape::btMultiSphereShape (const btVector3* positions,const btScala
 
 	btVector3 vec = vec0;
 	btScalar lenSqr = vec.length2();
-	if (lenSqr < (SIMD_EPSILON*SIMD_EPSILON))
+	if (lenSqr < (SIMD_EPSILON_SQ))
 	{
 		vec.setValue(1,0,0);
 	} else

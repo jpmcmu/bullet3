@@ -97,7 +97,7 @@ bool	btSubsimplexConvexCast::calcTimeOfImpact(
 		{
 			VdotR = v.dot(r);
 
-			if (VdotR >= -(SIMD_EPSILON*SIMD_EPSILON))
+			if (VdotR >= -(SIMD_EPSILON_SQ))
 				return false;
 			else
 			{
@@ -140,7 +140,7 @@ bool	btSubsimplexConvexCast::calcTimeOfImpact(
 	
 
 	result.m_fraction = lambda;
-	if (n.length2() >= (SIMD_EPSILON*SIMD_EPSILON))
+	if (n.length2() >= (SIMD_EPSILON_SQ))
 		result.m_normal = n.normalized();
 	else
 		result.m_normal = btVector3(btScalar(0.0), btScalar(0.0), btScalar(0.0));

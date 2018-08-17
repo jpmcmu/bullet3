@@ -178,7 +178,7 @@ public:
         {
             for(j=0;j<3;j++ )
             {
-            	m_AR[i][j] = 1e-6f + btFabs(m_R1to0[i][j]);
+            	m_AR[i][j] = SIMD_EPSILON + btFabs(m_R1to0[i][j]);
             }
         }
 

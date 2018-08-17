@@ -116,7 +116,7 @@ public:
 		axis[3] = btScalar(0.);
 		//check for axis length
 		btScalar len = axis.length2();
-		if (len < SIMD_EPSILON*SIMD_EPSILON)
+		if (len < SIMD_EPSILON_SQ)
 			axis = btVector3(btScalar(1.),btScalar(0.),btScalar(0.));
 		else
 			axis /= btSqrt(len);
@@ -145,7 +145,7 @@ public:
 		axis[3] = btScalar(0.);
 		//check for axis length
 		btScalar len = axis.length2();
-		if (len < SIMD_EPSILON*SIMD_EPSILON)
+		if (len < SIMD_EPSILON_SQ)
 			axis = btVector3(btScalar(1.),btScalar(0.),btScalar(0.));
 		else
 			axis /= btSqrt(len);

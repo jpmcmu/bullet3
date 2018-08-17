@@ -114,7 +114,7 @@ void CollisionShape2TriangleMesh(btCollisionShape* collisionShape, const btTrans
 					btScalar dot = triNormal.dot(triNormal);
 
 					//cull degenerate triangles
-					if (dot >= SIMD_EPSILON*SIMD_EPSILON)
+					if (dot >= SIMD_EPSILON_SQ)
 					{
 						triNormal /= btSqrt(dot);
 						for (int v = 0; v < 3; v++)

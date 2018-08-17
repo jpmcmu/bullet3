@@ -444,7 +444,7 @@ if (signd * signd < (btScalar(1e-8) * btScalar(1e-8)))
 		return -1;
 	}
 #else
-	if (signd * signd < (btScalar(1e-4) * btScalar(1e-4)))
+	if (signd * signd < SIMD_EPSILON_SQ)
 	{
 //		printf("affine dependent/degenerate\n");//
 		return -1;

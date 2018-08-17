@@ -105,7 +105,7 @@ bool SphereTriangleDetector::collide(const btVector3& sphereCenter,btVector3 &po
 	bool hasContact = false;
 	btVector3 contactPoint;
 
-	if (l2 >= SIMD_EPSILON*SIMD_EPSILON)
+	if (l2 >= SIMD_EPSILON_SQ)
 	{
 		normal /= btSqrt(l2);
 

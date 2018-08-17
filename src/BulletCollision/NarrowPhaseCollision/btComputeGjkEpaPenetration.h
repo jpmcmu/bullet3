@@ -241,7 +241,7 @@ int	btComputeGjkEpaPenetration(const btConvexTemplate& a, const btConvexTemplate
             {
                 m_degenerateSimplex = 5;
             }
-            if (lenSqr > SIMD_EPSILON*SIMD_EPSILON)
+            if (lenSqr > SIMD_EPSILON_SQ)
             {
                 btScalar rlen = btScalar(1.) / btSqrt(lenSqr );
                 normalInB *= rlen; //normalize
@@ -284,13 +284,13 @@ int	btComputeGjkEpaPenetration(const btConvexTemplate& a, const btConvexTemplate
             {
                 btVector3 tmpNormalInB = tmpPointOnB-tmpPointOnA;
                 btScalar lenSqr = tmpNormalInB.length2();
-                if (lenSqr <= (SIMD_EPSILON*SIMD_EPSILON))
+                if (lenSqr <= (SIMD_EPSILON_SQ))
                 {
                     tmpNormalInB = m_cachedSeparatingAxis;
                     lenSqr = m_cachedSeparatingAxis.length2();
                 }
                 
-                if (lenSqr > (SIMD_EPSILON*SIMD_EPSILON))
+                if (lenSqr > (SIMD_EPSILON_SQ))
                 {
                     tmpNormalInB /= btSqrt(lenSqr);
                     btScalar distance2 = -(tmpPointOnA-tmpPointOnB).length();

@@ -240,7 +240,7 @@ btVector3 btConvexShape::localGetSupportVertexWithoutMarginNonVirtual (const btV
 
 		btVector3 vec = vec0;
 		btScalar lenSqr = vec.length2();
-		if (lenSqr < SIMD_EPSILON*SIMD_EPSILON)
+		if (lenSqr < SIMD_EPSILON_SQ)
 		{
 			vec.setValue(1,0,0);
 		} else
@@ -308,7 +308,7 @@ btVector3 btConvexShape::localGetSupportVertexWithoutMarginNonVirtual (const btV
 btVector3 btConvexShape::localGetSupportVertexNonVirtual (const btVector3& localDir) const
 {
 	btVector3 localDirNorm = localDir;
-	if (localDirNorm .length2() < (SIMD_EPSILON*SIMD_EPSILON))
+	if (localDirNorm .length2() < (SIMD_EPSILON_SQ))
 	{
 		localDirNorm.setValue(btScalar(-1.),btScalar(-1.),btScalar(-1.));
 	}

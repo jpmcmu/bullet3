@@ -293,7 +293,7 @@ public:
 	{
 		btScalar l2 = length2();
 		//triNormal.normalize();
-		if (l2 >= SIMD_EPSILON*SIMD_EPSILON)
+		if (l2 >= SIMD_EPSILON_SQ)
 		{
 			(*this) /= btSqrt(l2);
 		}
@@ -700,7 +700,7 @@ public:
 
 	SIMD_FORCE_INLINE bool fuzzyZero() const 
 	{
-		return length2() < SIMD_EPSILON*SIMD_EPSILON;
+		return length2() < SIMD_EPSILON_SQ;
 	}
 
 	SIMD_FORCE_INLINE	void	serialize(struct	btVector3Data& dataOut) const;

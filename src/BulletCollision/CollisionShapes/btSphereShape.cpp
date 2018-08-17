@@ -41,7 +41,7 @@ btVector3	btSphereShape::localGetSupportingVertex(const btVector3& vec)const
 	supVertex = localGetSupportingVertexWithoutMargin(vec);
 
 	btVector3 vecnorm = vec;
-	if (vecnorm .length2() < (SIMD_EPSILON*SIMD_EPSILON))
+	if (vecnorm .length2() < (SIMD_EPSILON_SQ))
 	{
 		vecnorm.setValue(btScalar(-1.),btScalar(-1.),btScalar(-1.));
 	} 

@@ -144,7 +144,7 @@ public:
 
 	SIMD_FORCE_INLINE void calc_absolute_matrix()
 	{
-		static const btVector3 vepsi(1e-6f,1e-6f,1e-6f);
+		static const btVector3 vepsi(SIMD_EPSILON,SIMD_EPSILON,SIMD_EPSILON);
 		m_AR[0] = vepsi + m_R1to0[0].absolute();
 		m_AR[1] = vepsi + m_R1to0[1].absolute();
 		m_AR[2] = vepsi + m_R1to0[2].absolute();

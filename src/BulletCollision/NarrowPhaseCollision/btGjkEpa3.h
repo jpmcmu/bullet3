@@ -961,13 +961,13 @@ int	btComputeGjkEpaPenetration2(const btCollisionDescription& colDesc, btDistanc
             distInfo->m_normalBtoA = results.normal;
             btVector3 tmpNormalInB = results.witnesses[1]-results.witnesses[0];
             btScalar lenSqr = tmpNormalInB.length2();
-            if (lenSqr <= (SIMD_EPSILON*SIMD_EPSILON))
+            if (lenSqr <= (SIMD_EPSILON_SQ))
             {
                 tmpNormalInB = results.normal;
                 lenSqr = results.normal.length2();
             }
             
-            if (lenSqr > (SIMD_EPSILON*SIMD_EPSILON))
+            if (lenSqr > (SIMD_EPSILON_SQ))
             {
                 tmpNormalInB /= btSqrt(lenSqr);
                 btScalar distance2 = -(results.witnesses[0]-results.witnesses[1]).length();

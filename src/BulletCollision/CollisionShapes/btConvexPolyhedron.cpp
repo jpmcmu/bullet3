@@ -34,7 +34,7 @@ btConvexPolyhedron::~btConvexPolyhedron()
 
 inline bool IsAlmostZero(const btVector3& v)
 {
-	if(btFabs(v.x())>1e-6 || btFabs(v.y())>1e-6 || btFabs(v.z())>1e-6)	return false;
+	if(btFabs(v.x())>SIMD_EPSILON || btFabs(v.y())>SIMD_EPSILON || btFabs(v.z())>SIMD_EPSILON)	return false;
 	return true;
 }
 

@@ -152,7 +152,7 @@ static SIMD_FORCE_INLINE btScalar capsuleCapsuleDistance(
 		return distance;
 
 	btScalar lenSqr = ptsVector.length2();
-	if (lenSqr<= (SIMD_EPSILON*SIMD_EPSILON))
+	if (lenSqr<= (SIMD_EPSILON_SQ))
 	{
 		//degenerate case where 2 capsules are likely at the same location: take a vector tangential to 'directionA'
 		btVector3 q;
@@ -323,7 +323,7 @@ void btConvexConvexAlgorithm ::processCollision (const btCollisionObjectWrapper*
 
 		if (dist<threshold)
 		{
-			btAssert(normalOnB.length2()>=(SIMD_EPSILON*SIMD_EPSILON));
+			btAssert(normalOnB.length2()>=(SIMD_EPSILON_SQ));
 			resultOut->addContactPoint(normalOnB,pointOnBWorld,dist);	
 		}
 		resultOut->refreshContactPoints();
@@ -345,7 +345,7 @@ void btConvexConvexAlgorithm ::processCollision (const btCollisionObjectWrapper*
 
 		if (dist<threshold)
 		{
-			btAssert(normalOnB.length2()>=(SIMD_EPSILON*SIMD_EPSILON));
+			btAssert(normalOnB.length2()>=(SIMD_EPSILON_SQ));
 			resultOut->addContactPoint(normalOnB,pointOnBWorld,dist);	
 		}
 		resultOut->refreshContactPoints();
@@ -367,7 +367,7 @@ void btConvexConvexAlgorithm ::processCollision (const btCollisionObjectWrapper*
 
 		if (dist<threshold)
 		{
-			btAssert(normalOnB.length2()>=(SIMD_EPSILON*SIMD_EPSILON));
+			btAssert(normalOnB.length2()>=(SIMD_EPSILON_SQ));
 			resultOut->addContactPoint(normalOnB,pointOnBWorld,dist);	
 		}
 		resultOut->refreshContactPoints();
