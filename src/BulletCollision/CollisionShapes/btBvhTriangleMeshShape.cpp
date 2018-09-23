@@ -138,13 +138,16 @@ void	btBvhTriangleMeshShape::performRaycast (btTriangleCallback* callback, const
 				if (type == PHY_FLOAT)
 				{
 					float* graphicsbase = (float*)(vertexbase+graphicsindex*stride);
-					
 					m_triangle[j] = btVector3(graphicsbase[0]*meshScaling.getX(),graphicsbase[1]*meshScaling.getY(),graphicsbase[2]*meshScaling.getZ());		
 				}
-				else
+				else if(type == PHY_DOUBLE)
 				{
 					double* graphicsbase = (double*)(vertexbase+graphicsindex*stride);
-					
+					m_triangle[j] = btVector3(btScalar(graphicsbase[0])*meshScaling.getX(),btScalar(graphicsbase[1])*meshScaling.getY(),btScalar(graphicsbase[2])*meshScaling.getZ());		
+				}
+				else if(type == PHY_BT_SCALAR)
+				{
+					btScalar* graphicsbase = (btScalar*)(vertexbase+graphicsindex*stride);
 					m_triangle[j] = btVector3(btScalar(graphicsbase[0])*meshScaling.getX(),btScalar(graphicsbase[1])*meshScaling.getY(),btScalar(graphicsbase[2])*meshScaling.getZ());		
 				}
 			}
@@ -207,13 +210,16 @@ void	btBvhTriangleMeshShape::performConvexcast (btTriangleCallback* callback, co
 				if (type == PHY_FLOAT)
 				{
 					float* graphicsbase = (float*)(vertexbase+graphicsindex*stride);
-
 					m_triangle[j] = btVector3(graphicsbase[0]*meshScaling.getX(),graphicsbase[1]*meshScaling.getY(),graphicsbase[2]*meshScaling.getZ());		
 				}
-				else
+				else if(type == PHY_DOUBLE)
 				{
 					double* graphicsbase = (double*)(vertexbase+graphicsindex*stride);
-					
+					m_triangle[j] = btVector3(btScalar(graphicsbase[0])*meshScaling.getX(),btScalar(graphicsbase[1])*meshScaling.getY(),btScalar(graphicsbase[2])*meshScaling.getZ());		
+				} 
+				else if(type == PHY_BT_SCALAR)
+				{
+					btScalar* graphicsbase = (btScalar*)(vertexbase+graphicsindex*stride);
 					m_triangle[j] = btVector3(btScalar(graphicsbase[0])*meshScaling.getX(),btScalar(graphicsbase[1])*meshScaling.getY(),btScalar(graphicsbase[2])*meshScaling.getZ());		
 				}
 			}
@@ -301,9 +307,18 @@ void	btBvhTriangleMeshShape::processAllTriangles(btTriangleCallback* callback,co
 																		graphicsbase[1]*meshScaling.getY(),
 																		graphicsbase[2]*meshScaling.getZ());
 				}
-				else
+				else if(type == PHY_DOUBLE)
 				{
 					double* graphicsbase = (double*)(vertexbase+graphicsindex*stride);
+
+					m_triangle[j] = btVector3(
+						btScalar(graphicsbase[0])*meshScaling.getX(),
+						btScalar(graphicsbase[1])*meshScaling.getY(),
+						btScalar(graphicsbase[2])*meshScaling.getZ());
+				}
+				else if(type == PHY_BT_SCALAR)
+				{
+					btScalar* graphicsbase = (btScalar*)(vertexbase+graphicsindex*stride);
 
 					m_triangle[j] = btVector3(
 						btScalar(graphicsbase[0])*meshScaling.getX(),

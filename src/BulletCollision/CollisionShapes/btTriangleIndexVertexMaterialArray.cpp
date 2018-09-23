@@ -30,6 +30,8 @@ btTriangleIndexVertexArray(numTriangles, triangleIndexBase, triangleIndexStride,
     mat.m_materialStride = materialStride;
 #ifdef BT_USE_DOUBLE_PRECISION
     mat.m_materialType = PHY_DOUBLE;
+#elif defined(BT_USE_FIXED_POINT)
+    mat.m_materialType = PHY_BT_SCALAR;
 #else
     mat.m_materialType = PHY_FLOAT;
 #endif
@@ -54,6 +56,8 @@ void btTriangleIndexVertexMaterialArray::getLockedMaterialBase(unsigned char **m
     (*materialBase) = (unsigned char *) mats.m_materialBase;
 #ifdef BT_USE_DOUBLE_PRECISION
     materialType = PHY_DOUBLE;
+#elif defined(BT_USE_FIXED_POINT)
+    materialType = PHY_BT_SCALAR;
 #else
     materialType = PHY_FLOAT;
 #endif
@@ -74,6 +78,8 @@ void btTriangleIndexVertexMaterialArray::getLockedReadOnlyMaterialBase(const uns
     (*materialBase) = (const unsigned char *) mats.m_materialBase;
 #ifdef BT_USE_DOUBLE_PRECISION
     materialType = PHY_DOUBLE;
+#elif defined(BT_USE_FIXED_POINT)
+    materialType = PHY_BT_SCALAR;
 #else
     materialType = PHY_FLOAT;
 #endif

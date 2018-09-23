@@ -50,6 +50,8 @@ ATTRIBUTE_ALIGNED16( struct)	btIndexedMesh
 	   :m_indexType(PHY_INTEGER),
 #ifdef BT_USE_DOUBLE_PRECISION
       m_vertexType(PHY_DOUBLE)
+#elif defined(BT_USE_FIXED_POINT)
+	  m_vertexType(PHY_BT_SCALAR)
 #else // BT_USE_DOUBLE_PRECISION
       m_vertexType(PHY_FLOAT)
 #endif // BT_USE_DOUBLE_PRECISION

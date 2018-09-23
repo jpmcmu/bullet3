@@ -28,7 +28,8 @@ typedef enum PHY_ScalarType {
 	PHY_INTEGER,
 	PHY_SHORT,
 	PHY_FIXEDPOINT88,
-	PHY_UCHAR
+	PHY_UCHAR,
+	PHY_BT_SCALAR
 } PHY_ScalarType;
 
 ///The btConcaveShape class provides an interface for non-moving (static) concave shapes.

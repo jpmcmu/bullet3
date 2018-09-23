@@ -284,6 +284,11 @@ public:
 		m_totalForce += force*m_linearFactor;
 	}
 
+	void setTotalForce(const btVector3& force) 
+	{
+		m_totalForce = force;
+	}
+
 	const btVector3& getTotalForce() const
 	{
 		return m_totalForce;

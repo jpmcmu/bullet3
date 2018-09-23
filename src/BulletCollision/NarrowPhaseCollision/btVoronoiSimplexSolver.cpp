@@ -433,6 +433,11 @@ bool	btVoronoiSimplexSolver::closestPtPointTriangle(const btVector3& p, const bt
 int btVoronoiSimplexSolver::pointOutsideOfPlane(const btVector3& p, const btVector3& a, const btVector3& b, const btVector3& c, const btVector3& d)
 {
 	btVector3 normal = (b-a).cross(c-a);
+	btScalar l2 = normal.length2();
+	if (l2 < SIMD_EPSILON_SQ) {
+		return -1;
+	}
+	normal /= btSqrt(l2);
 
     btScalar signp = (p - a).dot(normal); // [AP AB AC]
     btScalar signd = (d - a).dot( normal); // [AD AB AC]

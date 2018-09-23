@@ -462,7 +462,7 @@ inline int btGetVersion()
 	SIMD_FORCE_INLINE btScalar btAsin(btScalar x) { return x.asin(); }
 	SIMD_FORCE_INLINE btScalar btAtan(btScalar x) { return x.atan(); }
 	SIMD_FORCE_INLINE btScalar btAtan2(btScalar x, btScalar y) { return fp64::atan2(x, y); }
-	SIMD_FORCE_INLINE btScalar btPow(btScalar x, btScalar y) { assert(0); return 0;}
+	SIMD_FORCE_INLINE btScalar btPow(btScalar x, btScalar y) { return fp64::pow(x,y);}
 	SIMD_FORCE_INLINE btScalar btFmod(btScalar x, btScalar y) { assert(0); return 0;}
 	SIMD_FORCE_INLINE btScalar btFloor(btScalar x) { return fp64::floor(x); }
 
@@ -551,8 +551,8 @@ inline int btGetVersion()
 	#define BT_TWO btScalar(2.0f)
 	#define BT_HALF btScalar(0.5f)
 #elif defined(BT_USE_FIXED_POINT)
-	#define SIMD_EPSILON btScalar(0.0001f)
-	#define SIMD_EPSILON_SQ btScalar(0.00001f)
+	#define SIMD_EPSILON btScalar(1e-4)
+	#define SIMD_EPSILON_SQ btScalar(1e-7)
 	#define SIMD_INFINITY btScalar(65536.0) 
 	#define BT_ONE btScalar(1.0f) 
 	#define BT_ZERO btScalar(0.0f)
@@ -604,7 +604,6 @@ SIMD_FORCE_INLINE int btIsNegative(btScalar x)
 	return x < btScalar(0.0) ? 1 : 0;
 }
 
-SIMD_FORCE_INLINE btScalar btRadians(btScalar x) { return x * SIMD_RADS_PER_DEG; }
 SIMD_FORCE_INLINE btScalar btDegrees(btScalar x) { return x * SIMD_DEGS_PER_RAD; }
 
 #define BT_DECLARE_HANDLE(name) \

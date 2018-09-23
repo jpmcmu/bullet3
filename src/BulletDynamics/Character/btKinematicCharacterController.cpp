@@ -163,7 +163,7 @@ btKinematicCharacterController::btKinematicCharacterController (btPairCachingGho
 
 	setUp(up);
 	setStepHeight(stepHeight);
-	setMaxSlope(btRadians(45.0));
+	setMaxSlope(45.0 * SIMD_PI/180.0);
 }
 
 btKinematicCharacterController::~btKinematicCharacterController ()

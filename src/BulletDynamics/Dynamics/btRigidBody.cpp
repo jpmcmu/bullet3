@@ -168,9 +168,8 @@ void			btRigidBody::applyDamping(btScalar timeStep)
 	m_linearVelocity *= GEN_clamped((btScalar(1.) - timeStep * m_linearDamping), (btScalar)btScalar(0.0), (btScalar)btScalar(1.0));
 	m_angularVelocity *= GEN_clamped((btScalar(1.) - timeStep * m_angularDamping), (btScalar)btScalar(0.0), (btScalar)btScalar(1.0));
 #else
-	// Timestep is fixed so precalculated damping to include the power to avoid implementing btPow
-	// m_linearVelocity *= (1 - m_linearDamping);	//btPow(btScalar(1)-m_linearDamping, timeStep);
-	// m_angularVelocity *= (1 - m_angularDamping); //btPow(btScalar(1)-m_angularDamping, timeStep);
+	m_linearVelocity *= btPow(btScalar(1)-m_linearDamping, timeStep);
+	m_angularVelocity *= btPow(btScalar(1)-m_angularDamping, timeStep);
 #endif
 
 	if (m_additionalDamping)
@@ -222,7 +221,6 @@ void btRigidBody::applyGravity()
 		return;
 	
 	applyCentralForce(m_gravity);	
-
 }
 
 void btRigidBody::proceedToTransform(const btTransform& newTrans)
