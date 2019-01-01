@@ -646,8 +646,7 @@ void btConvexConvexAlgorithm ::processCollision (const btCollisionObjectWrapper*
 	
 		if (l2>SIMD_EPSILON)
 		{
-			sepNormalWorldSpace = gjkPairDetector.getCachedSeparatingAxis()*(1.f/l2);
-			
+			sepNormalWorldSpace = gjkPairDetector.getCachedSeparatingAxis()/l2;
 			btPlaneSpace1(sepNormalWorldSpace,v0,v1);
 
 

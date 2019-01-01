@@ -153,5 +153,4 @@ inline GREAL gim_sqrt(GREAL f)
 }
 
 
-
 #endif // GIM_MATH_H_INCLUDED

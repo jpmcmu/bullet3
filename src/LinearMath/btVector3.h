@@ -226,7 +226,10 @@ public:
 		
 		return *this;
 #else
-		return *this *= btScalar(1.0) / s;
+		m_floats[0] /= s;
+		m_floats[1] /= s;
+		m_floats[2] /= s;
+		return *this;
 #endif
 	}
 
@@ -864,7 +867,11 @@ operator/(const btVector3& v, const btScalar& s)
 
 	return btVector3(_mm_mul_ps(v.mVec128, vs));
 #else
-	return v * (btScalar(1.0) / s);
+	btVector3 rv = v;
+	rv[0] /= s;
+	rv[1] /= s;
+	rv[2] /= s;
+	return rv;
 #endif
 }
 
@@ -1283,7 +1290,8 @@ SIMD_FORCE_INLINE void	btUnSwapVector3Endian(btVector3& vector)
 template <class T>
 SIMD_FORCE_INLINE void btPlaneSpace1 (const T& n, T& p, T& q)
 {
-  if (btFabs(n[2]) > SIMDSQRT12) {
+//   if (btFabs(n[2]) > SIMDSQRT12) {
+  if (btFabs(n[2]) > (btFabs(n[0]) + btFabs(n[1]))) {
     // choose p in y-z plane
     btScalar a = n[1]*n[1] + n[2]*n[2];
     btScalar k = btRecipSqrt (a);

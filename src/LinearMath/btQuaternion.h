@@ -943,9 +943,9 @@ shortestArcQuat(const btVector3& v0, const btVector3& v1) // Game Programming Ge
 	}
 
 	btScalar  s = btSqrt((1.0f + d) * 2.0f);
-	btScalar rs = 1.0f / s;
+	// btScalar rs = 1.0f / s;
 
-	return btQuaternion(c.getX()*rs,c.getY()*rs,c.getZ()*rs,s * 0.5f);
+	return btQuaternion(c.getX()/s,c.getY()/s,c.getZ()/s,s * 0.5f);
 }
 
 SIMD_FORCE_INLINE btQuaternion 

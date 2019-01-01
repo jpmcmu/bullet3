@@ -461,6 +461,37 @@ if (signd * signd < (btScalar(1e-8) * btScalar(1e-8)))
     return signp * signd < btScalar(0.);
 }
 
+int outOfPlane(const btVector3& ba, const btVector3& ca, const btVector3& pa, const btVector3& da)
+{
+	btVector3 normal = (ba).cross(ca);
+	btScalar l2 = normal.length2();
+	if (l2 < SIMD_EPSILON_SQ) {
+		return -1;
+	}
+	// normal /= btSqrt(l2);
+
+    btScalar signp = (pa).dot(normal); // [AP AB AC]
+    btScalar signd = (da).dot(normal); // [AD AB AC]
+
+#ifdef CATCH_DEGENERATE_TETRAHEDRON
+#ifdef BT_USE_DOUBLE_PRECISION
+	if (signd * signd < (btScalar(1e-8) * btScalar(1e-8)))
+	{
+		return -1;
+	}
+#else
+	if (signd * signd < SIMD_EPSILON_SQ)
+	{
+//		printf("affine dependent/degenerate\n");//
+		return -1;
+	}
+#endif
+
+#endif
+	// Points on opposite sides if expression signs are opposite
+    return signp * signd < btScalar(0);
+}
+
 
 bool	btVoronoiSimplexSolver::closestPtPointTetrahedron(const btVector3& p, const btVector3& a, const btVector3& b, const btVector3& c, const btVector3& d, btSubSimplexClosestResult& finalResult)
 {
@@ -474,22 +505,39 @@ bool	btVoronoiSimplexSolver::closestPtPointTetrahedron(const btVector3& p, const
 	finalResult.m_usedVertices.usedVertexC = true;
 	finalResult.m_usedVertices.usedVertexD = true;
 
+	btVector3 ba = b - a;
+	btVector3 ca = c - a;
+	btVector3 pa = p - a;
+	btVector3 da = d - a;
+
+    int pointOutsideABC = outOfPlane(ba, ca, pa, da);
+	int pointOutsideACD = outOfPlane(ca, da, pa, ba);
+  	int	pointOutsideADB = outOfPlane(da, ba, pa, ca);
+
+	btVector3 db = d - b;
+	btVector3 cb = c - b;
+	btVector3 pb = p - b;
+	btVector3 ab = a - b;
+	int	pointOutsideBDC = outOfPlane(db, cb, pb, ab);
+
+	/*
     int pointOutsideABC = pointOutsideOfPlane(p, a, b, c, d);
 	int pointOutsideACD = pointOutsideOfPlane(p, a, c, d, b);
   	int	pointOutsideADB = pointOutsideOfPlane(p, a, d, b, c);
 	int	pointOutsideBDC = pointOutsideOfPlane(p, b, d, c, a);
 
-   if (pointOutsideABC < 0 || pointOutsideACD < 0 || pointOutsideADB < 0 || pointOutsideBDC < 0)
-   {
-	   finalResult.m_degenerate = true;
-	   return false;
-   }
+	// Looks like this is a rare scenario
+	if (pointOutsideABC < 0 || pointOutsideACD < 0 || pointOutsideADB < 0 || pointOutsideBDC < 0)
+	{
+		finalResult.m_degenerate = true;
+		return false;
+	}
+	*/
 
-   if (!pointOutsideABC  && !pointOutsideACD && !pointOutsideADB && !pointOutsideBDC)
-	 {
-		 return false;
-	 }
-
+	if (!pointOutsideABC  && !pointOutsideACD && !pointOutsideADB && !pointOutsideBDC)
+	{
+		return false;
+	}
 
     btScalar bestSqDist = SIMD_INFINITY;
     // If point outside face abc then compute closest point on abc

@@ -1010,9 +1010,9 @@ Last column is added as the position
 								\
    /* if matrix not singular, and not orthonormal, then renormalize */ \
    if ((det!=1.0f) && (det != 0.0f)) {				\
-      det = 1.0f / det;						\
-      p[0] *= det;						\
-      p[1] *= det;						\
+      // det = 1.0f / det;						\
+      p[0] /= det;						\
+      p[1] /= det;						\
    }								\
 }\
 

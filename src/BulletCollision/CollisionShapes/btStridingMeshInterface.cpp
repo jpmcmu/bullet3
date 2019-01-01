@@ -49,7 +49,6 @@ void	btStridingMeshInterface::InternalProcessAllTriangles(btInternalTriangleInde
 		///so disable this feature by default
 		///see patch http://code.google.com/p/bullet/issues/detail?id=213
 
-		assert(0);
 		switch (type)
 		{
 		case PHY_FLOAT:
