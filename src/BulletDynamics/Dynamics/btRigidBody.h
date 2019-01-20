@@ -75,7 +75,9 @@ public:
 	btVector3		m_totalTorque;
 	
 	btScalar		m_linearDamping;
+	btScalar		m_linearDampingFactor;
 	btScalar		m_angularDamping;
+	btScalar		m_angularDampingFactor;
 
 	bool			m_additionalDamping;
 	btScalar		m_additionalDampingFactor;

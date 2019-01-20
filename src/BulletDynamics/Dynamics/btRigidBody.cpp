@@ -150,8 +150,13 @@ void btRigidBody::setGravity(const btVector3& acceleration)
 
 void btRigidBody::setDamping(btScalar lin_damping, btScalar ang_damping)
 {
+    const btScalar timeStep = btScalar(16)/btScalar(1000);
+
 	m_linearDamping = btClamped(lin_damping, (btScalar)btScalar(0.0), (btScalar)btScalar(1.0));
+	m_linearDampingFactor = btPow(btScalar(1)-m_linearDamping, timeStep);
+
 	m_angularDamping = btClamped(ang_damping, (btScalar)btScalar(0.0), (btScalar)btScalar(1.0));
+	m_angularDampingFactor = btPow(btScalar(1)-m_angularDamping, timeStep);
 }
 
 
@@ -168,8 +173,11 @@ void			btRigidBody::applyDamping(btScalar timeStep)
 	m_linearVelocity *= GEN_clamped((btScalar(1.) - timeStep * m_linearDamping), (btScalar)btScalar(0.0), (btScalar)btScalar(1.0));
 	m_angularVelocity *= GEN_clamped((btScalar(1.) - timeStep * m_angularDamping), (btScalar)btScalar(0.0), (btScalar)btScalar(1.0));
 #else
-	m_linearVelocity *= btPow(btScalar(1)-m_linearDamping, timeStep);
-	m_angularVelocity *= btPow(btScalar(1)-m_angularDamping, timeStep);
+	// m_linearVelocity *= btPow(btScalar(1)-m_linearDamping, timeStep);
+	m_linearVelocity *= m_linearDampingFactor;
+
+	// m_angularVelocity *= btPow(btScalar(1)-m_angularDamping, timeStep);
+	m_angularVelocity *= m_angularDampingFactor;
 #endif
 
 	if (m_additionalDamping)
