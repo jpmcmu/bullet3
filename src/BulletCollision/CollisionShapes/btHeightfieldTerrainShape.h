@@ -83,6 +83,7 @@ protected:
 	btScalar m_width;
 	btScalar m_length;
 	btScalar m_heightScale;
+
 	union
 	{
 		const unsigned char*	m_heightfieldDataUnsignedChar;
@@ -91,15 +92,18 @@ protected:
 		const void*	m_heightfieldDataUnknown;
 	};
 
+	uint8_t* m_holeData = nullptr;
+
 	PHY_ScalarType	m_heightDataType;	
 	bool	m_flipQuadEdges;
-  	bool  m_useDiamondSubdivision;
-	bool m_useZigzagSubdivision;
+  	bool  	m_useDiamondSubdivision;
+	bool 	m_useZigzagSubdivision;
 
 	int	m_upAxis;
 	
 	btVector3	m_localScaling;
 
+	bool getHoleValue(int x, int y) const;
 	virtual btScalar	getRawHeightFieldValue(int x,int y) const;
 	void		quantizeWithClamp(int* out, const btVector3& point,int isMax) const;
 	void		getVertex(int x,int y,btVector3& vertex) const;
@@ -114,12 +118,12 @@ protected:
 	void initialize(int heightStickWidth, int heightStickLength,
 	                const void* heightfieldData, btScalar heightScale,
 	                btScalar minHeight, btScalar maxHeight, int upAxis,
-	                PHY_ScalarType heightDataType, bool flipQuadEdges);
+	                PHY_ScalarType heightDataType, bool flipQuadEdges, bool hasHoleData);
 
 public:
 	
 	BT_DECLARE_ALIGNED_ALLOCATOR();
-	
+
 	/// preferred constructor
 	/**
 	  This constructor supports a range of heightfield
@@ -130,7 +134,7 @@ public:
 	                          const void* heightfieldData, btScalar heightScale,
 	                          btScalar minHeight, btScalar maxHeight,
 	                          int upAxis, PHY_ScalarType heightDataType,
-	                          bool flipQuadEdges);
+	                          bool flipQuadEdges, bool hasHoleData = false);
 
 	/// legacy constructor
 	/**
@@ -142,7 +146,6 @@ public:
 	btHeightfieldTerrainShape(int heightStickWidth,int heightStickLength,const void* heightfieldData, btScalar maxHeight,int upAxis,bool useFloatData,bool flipQuadEdges);
 
 	virtual ~btHeightfieldTerrainShape();
-
 
 	void setUseDiamondSubdivision(bool useDiamondSubdivision=true) { m_useDiamondSubdivision = useDiamondSubdivision;}
 

@@ -457,6 +457,8 @@ public:
 	///it reports one or more contact points for every overlapping object (including the one with deepest penetration)
 	void	contactTest(btCollisionObject* colObj, ContactResultCallback& resultCallback);
 
+	void	aabbTest(const btVector3& min, const btVector3& max, ContactResultCallback& resultCallback);
+
 	///contactTest performs a discrete collision test between two collision objects and calls the resultCallback if overlap if detected.
 	///it reports one or more contact points (including the one with deepest penetration)
 	void	contactPairTest(btCollisionObject* colObjA, btCollisionObject* colObjB, ContactResultCallback& resultCallback);

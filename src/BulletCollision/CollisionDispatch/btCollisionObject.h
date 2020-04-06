@@ -101,9 +101,9 @@ public:
 
 	void*			m_userObjectPointer;
 
-	int				m_userIndex2;
+	uint64_t	m_userIndex2;
 	
-    int	m_userIndex;
+    uint64_t	m_userIndex;
 
 	///time of impact calculation
 	btScalar		m_hitFraction; 
@@ -122,7 +122,7 @@ public:
 	///internal update revision number. It will be increased when the object changes. This allows some subsystems to perform lazy evaluation.
 	int			m_updateRevision;
 
-	btVector3	m_customDebugColorRGB;
+	// btVector3	m_customDebugColorRGB;
 
 public:
 
@@ -528,12 +528,12 @@ public:
 		return m_userObjectPointer;
 	}
 
-	int	getUserIndex() const
+	uint64_t getUserIndex() const
 	{
 		return m_userIndex;
 	}
 	
-	int	getUserIndex2() const
+	uint64_t getUserIndex2() const
 	{
 		return m_userIndex2;
 	}
@@ -545,12 +545,12 @@ public:
 	}
 
 	///users can point to their objects, userPointer is not used by Bullet
-	void	setUserIndex(int index)
+	void	setUserIndex(uint64_t index)
 	{
 		m_userIndex = index;
 	}
 	
-	void	setUserIndex2(int index)
+	void	setUserIndex2(uint64_t index)
 	{
 		m_userIndex2 = index;
 	}
@@ -562,7 +562,7 @@ public:
 
 	void	setCustomDebugColor(const btVector3& colorRGB)
 	{
-		m_customDebugColorRGB = colorRGB;
+		// m_customDebugColorRGB = colorRGB;
 		m_collisionFlags |= CF_HAS_CUSTOM_DEBUG_RENDERING_COLOR;
 	}
 
@@ -573,12 +573,13 @@ public:
 
 	bool getCustomDebugColor(btVector3& colorRGB) const
 	{
-		bool hasCustomColor = (0!=(m_collisionFlags&CF_HAS_CUSTOM_DEBUG_RENDERING_COLOR));
-		if (hasCustomColor)
-		{
-			colorRGB = m_customDebugColorRGB;
-		}
-		return hasCustomColor;
+		// bool hasCustomColor = (0!=(m_collisionFlags&CF_HAS_CUSTOM_DEBUG_RENDERING_COLOR));
+		// if (hasCustomColor)
+		// {
+		// 	colorRGB = m_customDebugColorRGB;
+		// }
+		// return hasCustomColor;
+		return false;
 	}
 
 	inline bool checkCollideWith(const btCollisionObject* co) const

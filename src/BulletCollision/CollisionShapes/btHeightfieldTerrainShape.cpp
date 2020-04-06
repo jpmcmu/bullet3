@@ -17,18 +17,16 @@ subject to the following restrictions:
 
 #include "LinearMath/btTransformUtil.h"
 
-
-
 btHeightfieldTerrainShape::btHeightfieldTerrainShape
 (
 int heightStickWidth, int heightStickLength, const void* heightfieldData,
 btScalar heightScale, btScalar minHeight, btScalar maxHeight,int upAxis,
-PHY_ScalarType hdt, bool flipQuadEdges
+PHY_ScalarType hdt, bool flipQuadEdges, bool hasHoleData
 )
 {
 	initialize(heightStickWidth, heightStickLength, heightfieldData,
 	           heightScale, minHeight, maxHeight, upAxis, hdt,
-	           flipQuadEdges);
+	           flipQuadEdges, hasHoleData);
 }
 
 
@@ -46,7 +44,7 @@ btHeightfieldTerrainShape::btHeightfieldTerrainShape(int heightStickWidth, int h
 
 	initialize(heightStickWidth, heightStickLength, heightfieldData,
 	           heightScale, minHeight, maxHeight, upAxis, hdt,
-	           flipQuadEdges);
+	           flipQuadEdges, false);
 }
 
 
@@ -55,7 +53,7 @@ void btHeightfieldTerrainShape::initialize
 (
 int heightStickWidth, int heightStickLength, const void* heightfieldData,
 btScalar heightScale, btScalar minHeight, btScalar maxHeight, int upAxis,
-PHY_ScalarType hdt, bool flipQuadEdges
+PHY_ScalarType hdt, bool flipQuadEdges, bool hasHoleData
 )
 {
 	// validation
@@ -83,6 +81,20 @@ PHY_ScalarType hdt, bool flipQuadEdges
 	m_useZigzagSubdivision = false;
 	m_upAxis = upAxis;
 	m_localScaling.setValue(btScalar(1.), btScalar(1.), btScalar(1.));
+
+	if (hasHoleData) {
+		m_holeData = (uint8_t*) heightfieldData;
+
+		uint32_t elementSize = sizeof(unsigned char);
+		if (m_heightDataType == PHY_SHORT) {
+			elementSize = sizeof(short);
+		} else if (m_heightDataType == PHY_FLOAT) {
+			elementSize = sizeof(btScalar);
+		}
+
+		uint32_t holeDataOffset = heightStickWidth * heightStickLength * elementSize;
+		m_holeData = &m_holeData[holeDataOffset];
+	}
 
 	// determine min/max axis-aligned bounding box (aabb) values
 	switch (m_upAxis)
@@ -141,6 +153,17 @@ void btHeightfieldTerrainShape::getAabb(const btTransform& t,btVector3& aabbMin,
 	aabbMax = center + extent;
 }
 
+bool btHeightfieldTerrainShape::getHoleValue(int x, int y) const
+{
+	if (m_holeData == nullptr) {
+		return false;
+	}
+
+	uint32_t bitIndex = y * (m_heightStickWidth-1) + x;
+	uint32_t byteIndex = bitIndex / 8;
+	uint32_t bitInByte = bitIndex % 8;
+	return m_holeData[byteIndex] & (1 << bitInByte);
+}
 
 /// This returns the "raw" (user's initial) height, not the actual height.
 /// The actual height needs to be adjusted to be relative to the center
@@ -235,10 +258,7 @@ void	btHeightfieldTerrainShape::getVertex(int x,int y,btVector3& vertex) const
 
 
 static inline int
-getQuantized
-(
-btScalar x
-)
+getQuantized(btScalar x)
 {
 	if (x < 0.0) {
 		return (int) (x - 0.5);
@@ -269,7 +289,7 @@ void btHeightfieldTerrainShape::quantizeWithClamp(int* out, const btVector3& poi
 		
 }
 
-
+#include "cLog.h"
 
 /// process all triangles within the provided axis-aligned bounding box
 /**
@@ -288,6 +308,7 @@ void	btHeightfieldTerrainShape::processAllTriangles(btTriangleCallback* callback
 	localAabbMin += m_localOrigin;
 	localAabbMax += m_localOrigin;
 
+	/*
 	//quantize the aabbMin and aabbMax, and adjust the start/end ranges
 	int	quantizedAabbMin[3];
 	int	quantizedAabbMax[3];
@@ -350,46 +371,55 @@ void	btHeightfieldTerrainShape::processAllTriangles(btTriangleCallback* callback
 			btAssert(0);
 		}
 	}
+	*/
 
-	
-  
+	// We don't need to do the crazy stuff above. Simply find the cells the min and max aabb points are in.
+	// Any cells that intersect those need to be checked. We add 1 for the less than comparison below
+	int startJ(localAabbMin[2]);
+	int endJ(localAabbMax[2] + 1);
+
+	int startX(localAabbMin[0]);
+	int endX(localAabbMax[0] + 1);
 
 	for(int j=startJ; j<endJ; j++)
 	{
 		for(int x=startX; x<endX; x++)
 		{
+			if (getHoleValue(x,j)) {
+				continue;
+			}
+
 			btVector3 vertices[3];
 			if (m_flipQuadEdges || (m_useDiamondSubdivision && !((j+x) & 1))|| (m_useZigzagSubdivision  && !(j & 1)))
 			{
-        //first triangle
-        getVertex(x,j,vertices[0]);
-		getVertex(x, j + 1, vertices[1]);
-		getVertex(x + 1, j + 1, vertices[2]);
-        callback->processTriangle(vertices,x,j);
-        //second triangle
-      //  getVertex(x,j,vertices[0]);//already got this vertex before, thanks to Danny Chapman
-        getVertex(x+1,j+1,vertices[1]);
-		getVertex(x + 1, j, vertices[2]);
-		callback->processTriangle(vertices, x, j);
-
-			} else
+				//first triangle
+				getVertex(x,j,vertices[0]);
+				getVertex(x, j + 1, vertices[1]);
+				getVertex(x + 1, j + 1, vertices[2]);
+				callback->processTriangle(vertices,x,j);
+				
+				//second triangle
+				//  getVertex(x,j,vertices[0]);//already got this vertex before, thanks to Danny Chapman
+				getVertex(x+1,j+1,vertices[1]);
+				getVertex(x + 1, j, vertices[2]);
+				callback->processTriangle(vertices, x, j);
+			}
+			else
 			{
-        //first triangle
-        getVertex(x,j,vertices[0]);
-        getVertex(x,j+1,vertices[1]);
-        getVertex(x+1,j,vertices[2]);
-        callback->processTriangle(vertices,x,j);
-        //second triangle
-        getVertex(x+1,j,vertices[0]);
-        //getVertex(x,j+1,vertices[1]);
-        getVertex(x+1,j+1,vertices[2]);
-        callback->processTriangle(vertices,x,j);
+				//first triangle
+				getVertex(x,j,vertices[0]);
+				getVertex(x,j+1,vertices[1]);
+				getVertex(x+1,j,vertices[2]);
+				callback->processTriangle(vertices,x,j);
+
+				//second triangle
+				getVertex(x+1,j,vertices[0]);
+				//getVertex(x,j+1,vertices[1]);
+				getVertex(x+1,j+1,vertices[2]);
+				callback->processTriangle(vertices,x,j);
 			}
 		}
 	}
-
-	
-
 }
 
 void	btHeightfieldTerrainShape::calculateLocalInertia(btScalar ,btVector3& inertia) const

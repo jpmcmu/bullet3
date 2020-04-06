@@ -300,6 +300,11 @@ public:
 	{
 		return m_totalTorque;
 	};
+
+	void setTotalTorque(const btVector3& torque)
+	{
+		m_totalTorque = torque;
+	}
     
 	const btVector3& getInvInertiaDiagLocal() const
 	{

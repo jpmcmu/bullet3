@@ -1276,6 +1276,18 @@ void	btCollisionWorld::contactTest( btCollisionObject* colObj, ContactResultCall
 }
 
 
+void	btCollisionWorld::aabbTest(const btVector3& min, const btVector3& max, ContactResultCallback& resultCallback)
+{
+	btCollisionObject temp;
+
+	btVector3 halfExtents = (max - min) * 0.5f;
+	btBoxShape boxShape(halfExtents);
+	temp.setCollisionShape(&boxShape);
+	temp.getWorldTransform().setOrigin(min + halfExtents);
+
+	contactTest(&temp, resultCallback);
+}
+
 ///contactTest performs a discrete collision test between two collision objects and calls the resultCallback if overlap if detected.
 ///it reports one or more contact points (including the one with deepest penetration)
 void	btCollisionWorld::contactPairTest(btCollisionObject* colObjA, btCollisionObject* colObjB, ContactResultCallback& resultCallback)

@@ -189,7 +189,8 @@ btBroadphaseProxy*				btDbvtBroadphase::createProxy(	const btVector3& aabbMin,
 	proxy->stage		=	m_stageCurrent;
 	proxy->m_uniqueId	=	uniqueID;
 	proxy->leaf			=	m_sets[0].insert(aabb,proxy);
-	listappend(proxy,m_stageRoots[m_stageCurrent]);
+
+	listappend(proxy,m_stageRoots[proxy->stage]);
 	if(!m_deferedcollide)
 	{
 		btDbvtTreeCollider	collider(this);
@@ -567,6 +568,11 @@ void							btDbvtBroadphase::collide(btDispatcher* dispatcher)
 			m_sets[0].remove(current->leaf);
 			ATTRIBUTE_ALIGNED16(btDbvtVolume)	curAabb=btDbvtVolume::FromMM(current->m_aabbMin,current->m_aabbMax);
 			current->leaf	=	m_sets[1].insert(curAabb,current);
+
+			// JM Notes: Leaving notes here for my understanding. So it would appear that we are removing things
+			// from m_stageCurrent (Dynamic, Fixed) and adding them to the fixed set. Then if SetAABB 
+			// is called fro a proxy it gets added back to dynamic? Setting proxy->stage to STAGECOUNT
+			// is the flag that triggers the move.
 			current->stage	=	STAGECOUNT;	
 			current			=	next;
 		} while(current);
