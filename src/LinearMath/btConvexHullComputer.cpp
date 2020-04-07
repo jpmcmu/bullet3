@@ -232,7 +232,7 @@ class btConvexHullInternal
 
 				btScalar toScalar() const
 				{
-					return ((int64_t) high >= 0) ? btScalar(high) * (btScalar(0x100000000LL) * btScalar(0x100000000LL)) + btScalar(low)
+					return ((int64_t) high >= 0) ? btScalar(high) * (btScalar(int64_t(0x100000000LL)) * btScalar(int64_t(0x100000000LL))) + btScalar(low)
 						: -(-*this).toScalar();
 				}
 
@@ -2069,6 +2069,7 @@ btVector3 btConvexHullInternal::getCoordinates(const Vertex* v)
 
 btScalar btConvexHullInternal::shrink(btScalar amount, btScalar clampAmount)
 {
+	
 	if (!vertexList)
 	{
 		return 0;
