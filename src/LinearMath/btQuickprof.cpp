@@ -276,7 +276,7 @@ unsigned long long int btClock::getTimeNanoseconds()
 btScalar btClock::getTimeSeconds()
 {
 	static const btScalar microseconds_to_seconds = btScalar(0.000001);
-	return btScalar(getTimeMicroseconds()) * microseconds_to_seconds;
+	return btScalar(uint64_t(getTimeMicroseconds())) * microseconds_to_seconds;
 }
 
 #ifndef BT_NO_PROFILE
